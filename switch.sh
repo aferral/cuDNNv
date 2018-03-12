@@ -1,12 +1,18 @@
 #!/bin/bash
 
-rm -f /usr/include/cudnn.h
-rm -f /usr/lib/x86_64-linux-gnu/*libcudnn*
-rm -f /usr/local/cuda-*/lib64/*libcudnn*
+
+cudaPath=$1
+
+rm -f "$cudaPath/include/cudnn.h"
+rm -f "$cudaPath/lib64/libcudnn*"
 
 
-cp -P packages/cudnn/include/cudnn.h /usr/include
-cp -P packages/cudnn/lib64/libcudnn* /usr/lib/x86_64-linux-gnu/
-chmod a+r /usr/lib/x86_64-linux-gnu/libcudnn*
+cp packages/cudnn/include/cudnn.h "$cudaPath/include"
+cp packages/cudnn/lib64/libcudnn* "$cudaPath/lib64"
 
+chmod a+r "$cudaPath/include/cudnn.h" 
+chmod a+r $(echo "$cudaPath/lib64/libcudnn*")
 rm -rf packages/cudnn
+
+
+cat "$cudaPath/include/cudnn.h" | grep CUDNN_MAJOR -A 2

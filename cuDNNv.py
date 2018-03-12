@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+import os
 import os.path
 import subprocess
 import glob
@@ -7,8 +7,17 @@ from Tkinter import *
 
 class App:
   def __init__(self, master):
+    frame2 = Frame(master)
+    frame2.pack()
+
     frame = Frame(master)
     frame.pack()
+
+    Label(frame2, text="CUDA PATH",).pack(side=LEFT)
+
+
+    self.entryPath = Entry(frame2)
+    self.entryPath.pack(side=RIGHT)
 
     self.quit = Button(frame, 
                          text="QUIT", fg="red",
@@ -32,6 +41,14 @@ class App:
 
     master.minsize(width=280, height=40)
 
+  def configureAndSwitch(self):
+    cudaP = self.entryPath.get().strip()
+    print("CUDA PATH: {0}".format(cudaP))
+    assert(not (cudaP == "")), "CUDA PATH required ex: /usr/local/cuda-8.0/"
+
+
+    subprocess.call(['sudo', 'bash' ,'switch.sh' ,'{0}'.format(cudaP)])
+
   def cuDNN5(self):
     v5 = glob.glob("packages/*v5.1.tgz")
     c5 = len(v5)
@@ -43,7 +60,8 @@ class App:
         subprocess.call(['mkdir', 'packages/cudnn'])
         subprocess.call(['tar', 'xf', v5[0], 
                          '-C', 'packages/cudnn', '--strip-components', '1'])
-        subprocess.call(['./switch.sh'])
+
+        self.configureAndSwitch()
 
         switchText = "Successfully switched to v5.1"
         switch.config(text = switchText)
@@ -64,7 +82,8 @@ class App:
         subprocess.call(['mkdir', 'packages/cudnn'])
         subprocess.call(['tar', 'xf', v6[0], 
                          '-C', 'packages/cudnn', '--strip-components', '1'])
-        subprocess.call(['./switch.sh'])
+
+        self.configureAndSwitch()
 
         switchText = "Successfully switched to v6.0"
         switch.config(text = switchText)
@@ -85,7 +104,7 @@ class App:
         subprocess.call(['mkdir', 'packages/cudnn'])
         subprocess.call(['tar', 'xf', v7[0], 
                          '-C', 'packages/cudnn', '--strip-components', '1'])
-        subprocess.call(['./switch.sh'])
+        self.configureAndSwitch()
 
         switchText = "Successfully switched to v7.0"
         switch.config(text = switchText)

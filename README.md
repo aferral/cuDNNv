@@ -24,7 +24,11 @@ cuDNNv is a simple script to install cuDNN to your system or to change the versi
 5. Finally, you can run the script by running the following command inside the cuDNNv directory:
 
    ``` python
-   python cuDNNv.py &
+   python cuDNNv.py
    ```
+
+6. Set the CUDA PATH variable (ex : /usr/local/cuda-8.0/)
+
+7. It will ask for sudo in the terminal 
    
    You can choose the version you want to install/switch to by clicking the corresponding button. You can also use cuDNNv to clean install the version you are already using to make sure it is working properly.
